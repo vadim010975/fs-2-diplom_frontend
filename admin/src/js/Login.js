@@ -47,7 +47,7 @@ export default class Login {
           body: JSON.stringify({
             email: this.loginInputEmailEl.value,
             password: this.loginInputPasswordEl.value,
-            device_name: "widows",
+            device_name: "windows",
           }),
       });
       if (jsonResponse.ok) {
