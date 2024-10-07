@@ -6,7 +6,8 @@ import SeancesList from "./SeanceList.js";
 import SeanceModal from "./SeanceModal.js";
 
 export default class SeanceGrid {
-  constructor() {
+  constructor(halls = []) {
+    this.halls = halls;
     this.init();
   }
 
@@ -16,7 +17,7 @@ export default class SeanceGrid {
       AddMovieModal.init();
       this.posterList = new PosterList(movies);
       PosterModal.init();
-      this.seancesList = new SeancesList(movies);
+      this.seancesList = new SeancesList(movies, this.halls);
       SeanceModal.init();
     });
   }

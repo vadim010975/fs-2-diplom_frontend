@@ -37,14 +37,13 @@ export default class Payment {
      this.paymentInfo = JSON.parse(sessionStorage.getItem("paymentInfo"));
   }
 
-  onClickAcceptinButtonEl() {
-    this.paymentInfo.chairs.forEach((chair, idx) => this.saveTicketInformation(chair.id).then(() => {
-      if (this.paymentInfo.chairs.length === idx + 1) {
-        if (!this.error) {
-          window.location.href = _URL_TICKET;
-        }
-      };
-    }));
+  async onClickAcceptinButtonEl() {
+    for (const chair of this.paymentInfo.chairs) {
+      await this.saveTicketInformation(chair.id);
+    }
+    if (!this.error) {
+      window.location.href = _URL_TICKET;
+    }
   }
 
   async saveTicketInformation(chairId) {

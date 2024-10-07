@@ -12,14 +12,14 @@ export default class Page {
     this.halls = [];
   }
 
-  init() {
+  async init() {
+    this.halls = await this.getHalls();
     this.initAccordeon();
-    this.hallManagement = new HallManagement();
-    this.hallConfiguration = new HallConfiguration();
-    this.priceConfiguration = new PriceConfiguration();
-    this.seanceGrid = new SeanceGrid();
-    this.openSales = new OpenSales();
-    getHalls();
+    this.hallManagement = new HallManagement(this.halls);
+    this.hallConfiguration = new HallConfiguration(this.halls);
+    this.priceConfiguration = new PriceConfiguration(this.halls);
+    this.seanceGrid = new SeanceGrid(this.halls);
+    this.openSales = new OpenSales(this.halls);
   }
 
   initAccordeon() {
@@ -32,5 +32,18 @@ export default class Page {
         header.classList.toggle("conf-step__header_opened");
       })
     );
+  }
+
+  async getHalls() {
+    const token = localStorage.getItem('token');
+    try {
+      const jsonResponse = await fetch(`${_URL}hall`, {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return await jsonResponse.json();
+    } catch (error) {
+      console.error(error);
+    }
   }
 }

@@ -1,15 +1,17 @@
 import HallSeances from "./HallSeances.js";
 
 export default class SeancesList {
-  constructor(movies) {
+  constructor(movies, halls = []) {
     this.movies = movies;
-    this.halls = [];
+    this.halls = halls;
     this.hallsSeances = [];
     this.init();
   }
 
   init() {
     this.bindToDom();
+    this.getHallsSeances(this.halls);
+    this.renderHallsSeances();
   }
 
   bindToDom() {
@@ -35,13 +37,12 @@ export default class SeancesList {
     });
   }
 
-  renderHallsSeances() {
+  async renderHallsSeances() {
     this.containerEl.innerHTML = "";
-    this.hallsSeances.forEach(el => {
-      el.getSeancesHallElement().then(elem => {
-        this.containerEl.appendChild(elem);
-      });
-    });
+    for (const item of this.hallsSeances) {
+        const element = await item.getSeancesHallElement();
+        this.containerEl.appendChild(element);
+    }
   }
 
   updateHallsSeances() {

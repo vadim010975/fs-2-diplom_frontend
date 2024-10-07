@@ -107,14 +107,11 @@ export default class Hall {
   }
 
   async getSelectedChairs() {
-    this.selectedChairsId.forEach(async (chairId) => {
-      await this.getChair(chairId).then((resolve) => {
-        this.selectedChairs.push(resolve);
-        if (this.selectedChairsId.length === this.selectedChairs.length) {
-          this.goToPagePayment();
-        }
-      });
-    });
+    for (const chairId of this.selectedChairsId) {
+      const chair = await this.getChair(chairId);
+      this.selectedChairs.push(chair);
+    }
+    this.goToPagePayment();
   }
 
   async getChair(chairId) {

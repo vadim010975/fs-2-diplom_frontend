@@ -15,10 +15,7 @@ export async function getHalls(activeHallId = null) {
       headers: { Authorization: `Bearer ${token}` },
     });
     const response = await jsonResponse.json();
-    if (!response.length) {
-      return;
-    }
-    if (!activeHallId) {
+    if (response.length > 0 && !activeHallId) {
       activeHallId = response[0].id;
     }
     dispatchUpdateEvent({

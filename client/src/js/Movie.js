@@ -16,8 +16,8 @@ export default class Movie {
       this.getSeances(hall.id).then((seances) => {
         if (seances.length > 0) {
           const movieSeancesHall = new MovieSeancesHall(hall.name, seances);
-        const movieSeancesHallEl = movieSeancesHall.getHallSeancesEl();
-        this.movieEl.appendChild(movieSeancesHallEl);
+          const movieSeancesHallEl = movieSeancesHall.getHallSeancesEl();
+          this.movieEl.appendChild(movieSeancesHallEl);
         }
       });
     });

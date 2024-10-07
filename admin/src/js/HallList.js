@@ -1,13 +1,12 @@
 export default class HallList {
   static counter = 0;
-  constructor(containerEl) {
+  constructor(containerEl, halls = []) {
     HallList.counterIncrement();
     this.objectId = HallList.counter;
     this.containerEl = containerEl;
-    this.halls = [];
-    this.activeHallId = [];
+    this.halls = halls;
+    this.activeHallId = this.halls.length > 0 ? this.halls[0].id : null;
     this.handlerUpdate = null;
-    this.init();
   }
   static counterIncrement() {
     HallList.counter += 1;
@@ -15,6 +14,8 @@ export default class HallList {
 
   init() {
     this.bindToDom();
+    this.renderHallsList();
+    this.handlerUpdate(this.halls.find(hall => hall.id === this.activeHallId));
   }
 
   bindToDom() {

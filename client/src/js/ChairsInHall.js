@@ -109,7 +109,7 @@ export default class ChairsInHall {
   removeChairToArray(chairId) {
     if (chairId && this.selectedChairsId.includes(chairId)) {
       this.selectedChairsId = [
-        ...this.selectedChairsId.filter((item) => item != chairId),
+        ...this.selectedChairsId.filter(item => item != chairId),
       ];
     }
   }

@@ -3,13 +3,14 @@ import { getHalls } from "./functions.js";
 import { defaultRows, defaultChairsInRow, ticketPrice, vipTicketPrice } from "./defaultHallData.js";
 
 export default class HallManagement {
-  constructor() {
+  constructor(halls = []) {
+    this.halls = halls;
     this.init();
-    this.halls = [];
   }
 
   init() {
     this.bindToDom();
+    this.renderHalls();
   }
 
   bindToDom() {
@@ -36,7 +37,6 @@ export default class HallManagement {
   updateHandler(e) {
     this.halls = e.detail.data;
     this.renderHalls();
-
   }
 
   renderHalls() {
@@ -53,16 +53,17 @@ export default class HallManagement {
   }
 
   btnRemoveHandle(hall) {
+    console.log("btnRemoveHandle");
     this.removeHall(hall).then(() => getHalls());
   }
 
   async removeHall(hall) {
     const token = localStorage.getItem('token');
     try {
-      await fetch(`${_URL}chair/${hall.id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // await fetch(`${_URL}chair/${hall.id}`, {
+      //   method: "DELETE",
+      //   headers: { Authorization: `Bearer ${token}` },
+      // });
       await fetch(`${_URL}hall/${hall.id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },

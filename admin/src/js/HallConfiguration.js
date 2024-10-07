@@ -3,7 +3,8 @@ import HallList from "./HallList.js";
 import HallSize from "./HallSize.js";
 
 export default class HallConfiguration {
-  constructor() {
+  constructor(halls = []) {
+    this.halls = halls;
     this.activeHallId = null;
     this.selectedElement = null;
     this.chairs = [];
@@ -13,8 +14,9 @@ export default class HallConfiguration {
 
   init() {
     this.bindToDom();
-    this.hallList = new HallList(this.hallsListEl);
+    this.hallList = new HallList(this.hallsListEl, this.halls);
     this.hallList.handlerUpdate = this.renderConfigurationOptions.bind(this);
+    this.hallList.init();
     this.hallSize = new HallSize();
     this.hallSize.handlerChangeSize = this.changeSize.bind(this);
   }
@@ -41,6 +43,9 @@ export default class HallConfiguration {
   }
 
   renderConfigurationOptions(activeHall) {
+    if (!activeHall) {
+      return;
+    }
     this.activeHallId = activeHall.id;
     this.getChairs().then(() => {
       this.hallSize.renderHallSize(this.getSizeHall(this.chairs));

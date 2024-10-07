@@ -2,19 +2,18 @@ import { _URL } from "./app.js";
 import HallList from "./HallList.js";
 
 export default class OpenSales {
-  constructor() {
-    this.halls = [];
-    this.activeHallId = null;
+  constructor(halls = []) {
+    this.halls = halls;
+    this.activeHallId = this.halls.length > 0 ? this.halls[0].id : null;
     this.sales = false;
     this.init();
   }
 
   init() {
     this.bindToDom();
-    this.getHalls().then(() => {
-      this.hallList = new HallList(this.hallsListEl);
-      this.hallList.handlerUpdate = this.updateHalls.bind(this);
-    });
+    this.hallList = new HallList(this.hallsListEl, this.halls);
+    this.hallList.handlerUpdate = this.updateHalls.bind(this);
+    this.hallList.init();
   }
 
   bindToDom() {
@@ -28,20 +27,26 @@ export default class OpenSales {
   }
 
   updateHalls(activeHall) {
+    if (!activeHall) {
+      return;
+    }
     this.activeHallId = activeHall.id;
     this.getHalls().then(() => {
-      this.sales = (this.halls.find(hall => hall.id === this.activeHallId)).sales;
-    this.renderTextBtn();
+      this.sales = this.halls.find(hall => hall.id === this.activeHallId).sales;
+      this.renderTextBtn();
     });
   }
 
   onClickBtn(e) {
     e.preventDefault();
+    if (!this.activeHallId) {
+      return;
+    }
     this.setSales().then(() => {
       this.getHalls().then(() => {
         this.sales = this.halls.find(hall => hall.id === this.activeHallId).sales;
         this.renderTextBtn();
-      })
+      });
     });
   }
 

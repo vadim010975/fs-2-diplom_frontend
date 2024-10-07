@@ -3,15 +3,20 @@ import { getHalls } from "./functions.js";
 import HallList from "./HallList.js";
 
 export default class PriceConfiguration {
-  constructor() {
-    this.activeHallId = null;
+  constructor(halls = []) {
+    this.halls = halls;
+    this.activeHallId = halls[0]?.id;
     this.init();
   }
 
   init() {
     this.bindToDom();
-    this.hallList = new HallList(this.hallsListEl);
+    this.hallList = new HallList(this.hallsListEl, this.halls);
     this.hallList.handlerUpdate = this.update.bind(this);
+    this.hallList.init();
+    if (this.activeHallId) {
+      this.renderPrices(this.halls.find(hall => hall.id === this.activeHallId));
+    }
   }
 
   bindToDom() {
@@ -32,6 +37,9 @@ export default class PriceConfiguration {
   }
 
   update(activeHall) {
+    if (!activeHall) {
+      return;
+    }
     this.activeHallId = activeHall.id;
     this.renderPrices(activeHall);
   }
