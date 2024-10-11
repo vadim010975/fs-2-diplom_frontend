@@ -45,6 +45,5 @@ export default class MovieSeancesHall {
       },
     });
     document.querySelector("main").dispatchEvent(event);
-
   }
 }

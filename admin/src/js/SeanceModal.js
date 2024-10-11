@@ -56,21 +56,5 @@ export default class SeanceModal {
 
   static async removeSeance() {
     await Fetch.send("DELETE", `seance/${SeanceModal.seanceId}`);
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}seance/${SeanceModal.seanceId}`, {
-    //     method: "DELETE",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   });
-    //   console.log(jsonResponse);
-    //   const response = await jsonResponse.json();
-    //   console.log(response);
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 }

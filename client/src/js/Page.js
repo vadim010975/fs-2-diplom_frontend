@@ -1,5 +1,4 @@
 import Calendar from "./Calendar.js";
-import Loader from "./Loader.js";
 import MoviesList from "./MoviesList.js";
 
 export default class Page {
@@ -24,5 +23,4 @@ export default class Page {
   onClickBtnSetting() {
     window.location.href = "/admin/src/html/login.html";
   }
-
 }

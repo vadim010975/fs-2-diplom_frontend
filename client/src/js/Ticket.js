@@ -52,29 +52,6 @@ export default class Ticket {
         ticketStart: this.paymentInfo.seance.start,
       },
     });
-
     return response;
-
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}qrcode`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       ticketTitle: this.paymentInfo.movieTitle,
-    //       ticketChairs: this.paymentInfo.chairs
-    //         .map((chair) => `ряд:${chair.row} место:${chair.place}`)
-    //         .join(", "),
-    //       ticketHall: this.paymentInfo.hallName,
-    //       ticketStart: this.paymentInfo.seance.start,
-    //     }),
-    //   });
-    //   // const response = await jsonResponse.json();
-    //   const response = await jsonResponse.text();
-    //   return response;
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 }

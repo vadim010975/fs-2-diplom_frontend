@@ -162,21 +162,6 @@ export default class HallConfiguration {
    */
   async createChairs(chairs, hallId) {
     return await Fetch.send("PUT", `chair/${hallId}`, { bodyJson: { chairs } });
-
-    // const token = localStorage.getItem("token");
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}chair/${hallId}`, {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //     body: JSON.stringify({ chairs }),
-    //   });
-    //   return await jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   /**
@@ -187,22 +172,6 @@ export default class HallConfiguration {
    */
   async getChairs() {
     this.chairs = await Fetch.send("GET", `hall/${this.activeHallId}/chairs`);
-
-    // const token = localStorage.getItem("token");
-    // try {
-    //   const jsonResponse = await fetch(
-    //     `${_URL}hall/${this.activeHallId}/chairs`,
-    //     {
-    //       method: "GET",
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     }
-    //   );
-    //   this.chairs = await jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   renderHall(chairs) {

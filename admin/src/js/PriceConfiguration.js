@@ -76,23 +76,6 @@ export default class PriceConfiguration {
         vip_ticket_price: this.inputVipTicketPriceEl.value,
       }
     });
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   await fetch(`${_URL}hall/prices/${this.activeHallId}`, {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //     body: JSON.stringify({
-    //       ticket_price: this.inputTicketPriceEl.value,
-    //       vip_ticket_price: this.inputVipTicketPriceEl.value,
-    //     }),
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   onClickCancelBtn(e) {

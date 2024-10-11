@@ -39,18 +39,6 @@ export default class SeancesTime {
 
   async getSeances() {
     this.seances = await Fetch.send("GET", `hall/${this.hallId}/seances`);
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}hall/${this.hallId}/seances`, {
-    //     method: "GET",
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   });
-    //   const response = await jsonResponse.json();
-    //   this.seances = response;
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   calculateAvailableTime() {

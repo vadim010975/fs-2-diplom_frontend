@@ -64,16 +64,6 @@ export default class HallManagement {
 
   async removeHall(hall) {
     await Fetch.send("DELETE", `hall/${hall.id}`);
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   await fetch(`${_URL}hall/${hall.id}`, {
-    //     method: "DELETE",
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   onClickBtnCreateHall() {
@@ -119,27 +109,6 @@ export default class HallManagement {
       },
     });
     return response.id;
-
-    // const token = localStorage.getItem("token");
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}hall`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //     body: JSON.stringify({
-    //       name: hall,
-    //       ticket_price: ticketPrice,
-    //       vip_ticket_price: vipTicketPrice,
-    //       sales: false,
-    //     }),
-    //   });
-    //   const response = await jsonResponse.json();
-    //   return response.id;
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   /**
@@ -152,22 +121,6 @@ export default class HallManagement {
    */
   async sendDefaultChairs(chairs) {
     await Fetch.send("POST", "chair", { bodyJson: { chairs } });
-
-    // const token = localStorage.getItem("token");
-    // try {
-    //   await fetch(`${_URL}chair`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //     body: JSON.stringify({
-    //       chairs,
-    //     }),
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   createDefaultChairs(defaultRows, defaultChairsInRow, hallId) {

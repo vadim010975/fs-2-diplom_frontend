@@ -82,37 +82,10 @@ export default class OpenSales {
 
   async getHalls() {
     this.halls = await Fetch.send("GET", "hall");
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}hall`, {
-    //     method: "GET",
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   });
-    //   this.halls = await jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   async setSales() {
     await Fetch.send("PUT", `hall/${this.activeHallId}/sales`, { bodyJson: { sales: !this.sales, } });
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   await fetch(`${_URL}hall/${this.activeHallId}/sales`, {
-    //     method: "PUT",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //     body: JSON.stringify({
-    //       sales: !this.sales,
-    //     }),
-    //   });
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   async requestSeances(hallId) {
@@ -121,18 +94,6 @@ export default class OpenSales {
     }
     const response = await Fetch.send("GET", `hall/${hallId}/seances`);
     return response.length > 0 ? true : false;
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}hall/${hallId}/seances`, {
-    //     method: "GET",
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   });
-    //   const response = await jsonResponse.json();
-    //   return response.length > 0 ? true : false;
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   onUpdateSeances() {

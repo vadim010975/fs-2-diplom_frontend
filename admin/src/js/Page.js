@@ -37,16 +37,5 @@ export default class Page {
 
   async getHalls() {
     return await Fetch.send("GET", "hall");
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}hall`, {
-    //     method: "GET",
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   });
-    //   return await jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 }

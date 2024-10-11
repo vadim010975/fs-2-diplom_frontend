@@ -19,17 +19,6 @@ export default class HallSeances {
 
   async getSeances() {
     this.seances = await Fetch.send("GET", `hall/${this.hall.id}/seances`);
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}hall/${this.hall.id}/seances`, {
-    //     method: "GET",
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   });
-    //   this.seances = await jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   async createHallElement() {

@@ -32,27 +32,10 @@ export default class MoviesList {
   async getMovies(date) {
     const formateDate = date.toISOString().slice(0, 10);
     this.movies = await Fetch.send("GET", `movie/date/${formateDate}`);
-
-    // try {
-    //   const formateDate = date.toISOString().slice(0, 10);
-    //   const jsonResponse = await fetch(`${_URL}movie/date/${formateDate}`);
-    //   this.movies = await jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   async getHalls() {
     this.halls = await Fetch.send("GET", "hall/seances/available");
-    // this.halls = response.filter(hall => hall.sales);
-
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}hall/seances/available`);
-    //   const response = await jsonResponse.json();
-    //   this.halls = response.filter(hall => hall.sales);
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   renderList() {

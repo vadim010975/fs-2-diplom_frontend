@@ -29,13 +29,6 @@ export default class ChairsInHall {
 
   async getChairs() {
     this.chairs = await Fetch.send("GET", `hall/${this.hallId}/chairs`);
-
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}hall/${this.hallId}/chairs`);
-    //   this.chairs = await jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   async getOccupiedChairs() {
@@ -45,17 +38,6 @@ export default class ChairsInHall {
         this.date
       ).toLocaleDateString()}`
     );
-
-    // try {
-    //   const jsonResponse = await fetch(
-    //     `${_URL}chair/seance/${this.seance.id}/date/${new Date(
-    //       this.date
-    //     ).toLocaleDateString()}`
-    //   );
-    //   this.occupiedChairs = await jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   renderChairs(chairs) {

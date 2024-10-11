@@ -67,14 +67,5 @@ export default class Movie {
 
   async getSeances(hallId) {
     return await Fetch.send("GET", `hall/${hallId}/seances/${this.movie.id}`);
-
-    // try {
-    //   const jsonResponse = await fetch(
-    //     `${_URL}hall/${hallId}/seances/${this.movie.id}`
-    //   );
-    //   return jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 }

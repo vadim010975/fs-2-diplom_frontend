@@ -22,19 +22,8 @@ export default class PosterList {
 
   async onUpdatePosterList() {
     const response = await Fetch.send("GET", "movie");
-
-    // const token = localStorage.getItem('token');
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}movie`, {
-    //     method: "GET",
-    //     headers: { Authorization: `Bearer ${token}` },
-    //   });
-    //   const response = await jsonResponse.json();
       this.getPosters(response);
       this.renderPosters();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   renderPosters() {

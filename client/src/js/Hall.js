@@ -57,16 +57,9 @@ export default class Hall {
 
   async getBuyingInfo(seanceId) {
     const response = await Fetch.send("GET", `seance/${seanceId}`)
-
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}seance/${seanceId}`);
-    //   const response = await jsonResponse.json();
       this.hall = response.hall;
       this.movie = response.movie;
       this.seance = response.seance;
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   renderBuyingInfo() {
@@ -119,13 +112,6 @@ export default class Hall {
 
   async getChair(chairId) {
     return await Fetch.send("GET", `chair/${chairId}`);
-
-    // try {
-    //   const jsonResponse = await fetch(`${_URL}chair/${chairId}`);
-    //   return jsonResponse.json();
-    // } catch (error) {
-    //   console.error(error);
-    // }
   }
 
   getCost() {

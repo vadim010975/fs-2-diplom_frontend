@@ -134,14 +134,6 @@ export default class AddMovieModal {
     }
       const formData = new FormData(AddMovieModal.formEl);
       await Fetch.send("POST", `movie/${AddMovieModal.movieId}`, { formData, addPut: true });
-
-      // const token = localStorage.getItem('token');
-      // formData.append("_method", "PUT");
-      // await fetch(`${_URL}movie/${AddMovieModal.movieId}`, {
-      //   method: "POST",
-      //   headers: { Authorization: `Bearer ${token}` },
-      //   body: formData,
-      // });
   }
 
   static edit(movie) {

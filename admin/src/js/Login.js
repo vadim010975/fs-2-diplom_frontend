@@ -16,9 +16,14 @@ export default class Login {
   bindToDom() {
     this.containerEl = document.querySelector("main");
     this.loginFormEl = document.querySelector(".login__form");
-    this.loginFormEl.addEventListener("submit", this.onSubmitLoginForm.bind(this));
+    this.loginFormEl.addEventListener(
+      "submit",
+      this.onSubmitLoginForm.bind(this)
+    );
     this.loginInputEmailEl = document.querySelector(".login__input_email");
-    this.loginInputPasswordEl = document.querySelector(".login__input_password");
+    this.loginInputPasswordEl = document.querySelector(
+      ".login__input_password"
+    );
   }
 
   onSubmitLoginForm(e) {
@@ -27,7 +32,7 @@ export default class Login {
   }
 
   getTokenFromLocalStorage() {
-   return localStorage.getItem("token");
+    return localStorage.getItem("token");
   }
 
   removeToken() {
@@ -53,26 +58,10 @@ export default class Login {
         device_name: "windows",
       },
     });
-
-    // try {
-    //   const jsonResponse  = await fetch(`${_URL}tokens/create`, {
-    //     method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify({
-    //         email: this.loginInputEmailEl.value,
-    //         password: this.loginInputPasswordEl.value,
-    //         device_name: "windows",
-    //       }),
-    //   });
-      if (jsonResponse.ok) {
-        const response = await jsonResponse.json();
-        this.putTokenIntoLocalStorage(response.token);
-        window.location.href = _URL_ADMIN_INDEX;
-      }
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    if (jsonResponse.ok) {
+      const response = await jsonResponse.json();
+      this.putTokenIntoLocalStorage(response.token);
+      window.location.href = _URL_ADMIN_INDEX;
+    }
   }
 }

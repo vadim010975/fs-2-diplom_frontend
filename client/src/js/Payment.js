@@ -63,19 +63,6 @@ export default class Payment {
           },
         cleanResponse: true,
       });
-
-
-      // const response = await fetch(`${_URL}ticket`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     date: new Date(this.paymentInfo.date).toLocaleDateString(),
-      //     seance_id: this.paymentInfo.seance.id,
-      //     chair_id: chairId,
-      //   }),
-      // });
       if (!response.ok) {
         throw new Error(response.status);
       }
