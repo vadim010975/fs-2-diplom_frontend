@@ -106,6 +106,7 @@ export default class HallConfiguration {
   }
 
   onClickBtnCancel() {
+
     if (this.chairsCopy.length > 0) {
       this.selectedPlace = null;
       this.chairs = [];
@@ -118,7 +119,7 @@ export default class HallConfiguration {
     }
   }
 
-  onClickBtnSave() {
+  async onClickBtnSave() {
     if (this.chairsCopy.length === 0) {
       return;
     }
@@ -129,12 +130,12 @@ export default class HallConfiguration {
     }
     this.chairsCopy = [];
     if (chairs.every((chair) => chair.id)) {
-      this.updateChairs(chairs);
+      await this.updateChairs(chairs);
     } else {
-      this.createChairs(chairs, this.activeHallId).then((resolve) =>
-        this.renderHall(resolve)
-      );
+      const sevedChairs = await this.createChairs(chairs, this.activeHallId);
+      this.renderHall(sevedChairs);
     }
+    await this.getChairs();
   }
 
   /**
