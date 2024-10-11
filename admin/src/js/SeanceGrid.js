@@ -4,6 +4,7 @@ import PosterList from "./PosterList.js";
 import PosterModal from "./PosterModal.js";
 import SeancesList from "./SeanceList.js";
 import SeanceModal from "./SeanceModal.js";
+import Fetch from "./Fetch.js";
 
 export default class SeanceGrid {
   constructor(halls = []) {
@@ -41,16 +42,18 @@ export default class SeanceGrid {
   }
 
   async getMovies() {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse = await fetch(`${_URL}movie`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const response = await jsonResponse.json();
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
+    return await Fetch.send("GET", "movie");
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}movie`, {
+    //     method: "GET",
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+    //   const response = await jsonResponse.json();
+    //   return response;
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 }

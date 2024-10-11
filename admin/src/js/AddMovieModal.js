@@ -1,4 +1,5 @@
 import { _URL } from "./app.js";
+import Fetch from "./Fetch.js";
 
 export default class AddMovieModal {
   static editMode = false;
@@ -85,6 +86,12 @@ export default class AddMovieModal {
 
   static onSubmitForm(e) {
     e.preventDefault();
+    if (
+      !isFinite(+AddMovieModal.durationInputEl.value) ||
+      +AddMovieModal.durationInputEl.value <= 0
+    ) {
+      return;
+    }
     let method;
     if (AddMovieModal.editMode) {
       method = AddMovieModal.editMovie;
@@ -102,37 +109,39 @@ export default class AddMovieModal {
     document.querySelector(".main").dispatchEvent(event);
   }
 
+  /**
+   * Функция для создания нового фильма,
+   * данные formData
+   *
+   * @static
+   * @async
+   * @returns {*}
+   */
   static async addMovie() {
-    const token = localStorage.getItem('token');
-    try {
       const formData = new FormData(AddMovieModal.formEl);
-      await fetch(`${_URL}movie`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-    } catch (error) {
-      console.error(error);
-    }
+      await Fetch.send("POST", "movie", { formData });
   }
 
+  /**
+   * Функция для редактирования фильма,
+   * данные formData,
+   * заменяются по параметру AddMovieModal.movieId
+   * 
+   */
   static async editMovie() {
     if (!AddMovieModal.movieId) {
       return;
     }
-    const token = localStorage.getItem('token');
-    try {
       const formData = new FormData(AddMovieModal.formEl);
-      formData.append("_method", "PUT");
-      await fetch(`${_URL}movie/${AddMovieModal.movieId}`, {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
+      await Fetch.send("POST", `movie/${AddMovieModal.movieId}`, { formData, addPut: true });
 
-    } catch (error) {
-      console.error(error);
-    }
+      // const token = localStorage.getItem('token');
+      // formData.append("_method", "PUT");
+      // await fetch(`${_URL}movie/${AddMovieModal.movieId}`, {
+      //   method: "POST",
+      //   headers: { Authorization: `Bearer ${token}` },
+      //   body: formData,
+      // });
   }
 
   static edit(movie) {

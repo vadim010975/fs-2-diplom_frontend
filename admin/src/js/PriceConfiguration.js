@@ -1,6 +1,7 @@
 import { _URL } from "./app.js";
 import { getHalls } from "./functions.js";
 import HallList from "./HallList.js";
+import Fetch from "./Fetch.js";
 
 export default class PriceConfiguration {
   constructor(halls = []) {
@@ -53,28 +54,45 @@ export default class PriceConfiguration {
 
   onSubmitForm(e) {
     e.preventDefault();
+    if (
+      !Number.isInteger(+this.inputTicketPriceEl.value) ||
+      !Number.isInteger(+this.inputVipTicketPriceEl.value) ||
+      +this.inputTicketPriceEl.value === 0 ||
+      +this.inputVipTicketPriceEl.value === 0
+    ) {
+      this.inputTicketPriceEl.value = "";
+      this.inputVipTicketPriceEl.value = "";
+      return;
+    }
     this.setPrices().then(() => {
       getHalls(this.activeHallId);
     });
   }
 
   async setPrices() {
-    const token = localStorage.getItem('token');
-    try {
-      await fetch(`${_URL}hall/prices/${this.activeHallId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ticket_price: this.inputTicketPriceEl.value,
-          vip_ticket_price: this.inputVipTicketPriceEl.value,
-        }),
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    await Fetch.send("PUT", `hall/prices/${this.activeHallId}`, {
+      bodyJson: {
+        ticket_price: this.inputTicketPriceEl.value,
+        vip_ticket_price: this.inputVipTicketPriceEl.value,
+      }
+    });
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   await fetch(`${_URL}hall/prices/${this.activeHallId}`, {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //     body: JSON.stringify({
+    //       ticket_price: this.inputTicketPriceEl.value,
+    //       vip_ticket_price: this.inputVipTicketPriceEl.value,
+    //     }),
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   onClickCancelBtn(e) {

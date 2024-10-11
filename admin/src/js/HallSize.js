@@ -24,6 +24,4 @@ export default class HallSize {
   onChangeSize() {
     this.handlerChangeSize({rows: this.countRowsEl.value, places: this.countPlacesEl.value});
   }
-
-  
 }

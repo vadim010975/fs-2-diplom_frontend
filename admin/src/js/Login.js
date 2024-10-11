@@ -1,4 +1,5 @@
 import { _URL, _URL_ADMIN_INDEX } from "./app.js";
+import Fetch from "./Fetch.js";
 
 export default class Login {
   constructor() {
@@ -37,26 +38,41 @@ export default class Login {
     localStorage.setItem("token", token);
   }
 
+  /**
+   * Функция отправляет данные авторизации
+   *
+   * @async
+   * @returns {*}
+   */
   async sendForm() {
-    try {
-      const jsonResponse  = await fetch(`${_URL}tokens/create`, {
-        method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: this.loginInputEmailEl.value,
-            password: this.loginInputPasswordEl.value,
-            device_name: "windows",
-          }),
-      });
+    const jsonResponse = await Fetch.send("POST", "tokens/create", {
+      cleanResponse: true,
+      bodyJson: {
+        email: this.loginInputEmailEl.value,
+        password: this.loginInputPasswordEl.value,
+        device_name: "windows",
+      },
+    });
+
+    // try {
+    //   const jsonResponse  = await fetch(`${_URL}tokens/create`, {
+    //     method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         email: this.loginInputEmailEl.value,
+    //         password: this.loginInputPasswordEl.value,
+    //         device_name: "windows",
+    //       }),
+    //   });
       if (jsonResponse.ok) {
         const response = await jsonResponse.json();
         this.putTokenIntoLocalStorage(response.token);
         window.location.href = _URL_ADMIN_INDEX;
       }
-    } catch (error) {
-      console.error(error);
-    }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 }

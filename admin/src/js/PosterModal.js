@@ -1,6 +1,7 @@
 import AddMovieModal from "./AddMovieModal.js";
 import { _URL } from "./app.js";
 import SeancesTime from "./SeancesTime.js";
+import Fetch from "./Fetch.js";
 
 export default class PosterModal {
   static movie;
@@ -162,20 +163,22 @@ export default class PosterModal {
   }
 
   static async getHalls() {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse = await fetch(`${_URL}hall`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const response = await jsonResponse.json();
+    const response = await Fetch.send("GET", "hall");
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}hall`, {
+    //     method: "GET",
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+    //   const response = await jsonResponse.json();
       if (!response.length) {
         return [];
       }
       return response;
-    } catch (error) {
-      console.error(error);
-    }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   static renderAvailableTime(times) {
@@ -235,25 +238,35 @@ export default class PosterModal {
   }
 
   static async addSeance() {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse  = await fetch(`${_URL}seance`, {
-        method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            movie_id: PosterModal.movie.id,
-            hall_id: PosterModal.hallSelectEl.value,
-            start: `${PosterModal.hoursSelectEl.value}:${PosterModal.minutesSelectEl.value}`,
-          }),
-      });
-      const response = await jsonResponse.json();
-      return response.id;
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await Fetch.send("POST", "seance", {
+      bodyJson:
+        {
+          movie_id: PosterModal.movie.id,
+          hall_id: PosterModal.hallSelectEl.value,
+          start: `${PosterModal.hoursSelectEl.value}:${PosterModal.minutesSelectEl.value}`,
+        }
+    });
+    return response.id;
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   const jsonResponse  = await fetch(`${_URL}seance`, {
+    //     method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //       body: JSON.stringify({
+    //         movie_id: PosterModal.movie.id,
+    //         hall_id: PosterModal.hallSelectEl.value,
+    //         start: `${PosterModal.hoursSelectEl.value}:${PosterModal.minutesSelectEl.value}`,
+    //       }),
+    //   });
+    //   const response = await jsonResponse.json();
+    //   return response.id;
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   static onClickBtnRemoveAllSeances() {
@@ -274,18 +287,20 @@ export default class PosterModal {
   }
 
   static async removeAllSeances() {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse  = await fetch(`${_URL}seance/all/${PosterModal.movie.id}`, {
-        method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    await Fetch.send("DELETE", `seance/all/${PosterModal.movie.id}`)
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   const jsonResponse  = await fetch(`${_URL}seance/all/${PosterModal.movie.id}`, {
+    //     method: "DELETE",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   static onClickBtnRemoveMovie() {
@@ -297,18 +312,20 @@ export default class PosterModal {
   }
 
   static async removeMovie() {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse  = await fetch(`${_URL}movie/${PosterModal.movie.id}`, {
-        method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    await Fetch.send("DELETE", `movie/${PosterModal.movie.id}`);
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   const jsonResponse  = await fetch(`${_URL}movie/${PosterModal.movie.id}`, {
+    //     method: "DELETE",
+    //       headers: {
+    //         // "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
 }

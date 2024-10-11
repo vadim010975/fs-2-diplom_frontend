@@ -1,4 +1,5 @@
 import { _URL } from "./app.js";
+import Fetch from "./Fetch.js";
 
 export default class SeancesTime {
   constructor(hallId, movie) {
@@ -12,7 +13,6 @@ export default class SeancesTime {
 
   init() {
     this.availableTime = SeancesTime.initSampleAvailableTime();
-
   }
 
   async getAvailableTime() {
@@ -38,17 +38,19 @@ export default class SeancesTime {
   }
 
   async getSeances() {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse = await fetch(`${_URL}hall/${this.hallId}/seances`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const response = await jsonResponse.json();
-      this.seances = response;
-    } catch (error) {
-      console.error(error);
-    }
+    this.seances = await Fetch.send("GET", `hall/${this.hallId}/seances`);
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}hall/${this.hallId}/seances`, {
+    //     method: "GET",
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+    //   const response = await jsonResponse.json();
+    //   this.seances = response;
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   calculateAvailableTime() {

@@ -1,6 +1,12 @@
 import { _URL } from "./app.js";
 import { getHalls } from "./functions.js";
-import { defaultRows, defaultChairsInRow, ticketPrice, vipTicketPrice } from "./defaultHallData.js";
+import {
+  defaultRows,
+  defaultChairsInRow,
+  ticketPrice,
+  vipTicketPrice,
+} from "./defaultHallData.js";
+import Fetch from "./Fetch.js";
 
 export default class HallManagement {
   constructor(halls = []) {
@@ -53,24 +59,21 @@ export default class HallManagement {
   }
 
   btnRemoveHandle(hall) {
-    console.log("btnRemoveHandle");
     this.removeHall(hall).then(() => getHalls());
   }
 
   async removeHall(hall) {
-    const token = localStorage.getItem('token');
-    try {
-      // await fetch(`${_URL}chair/${hall.id}`, {
-      //   method: "DELETE",
-      //   headers: { Authorization: `Bearer ${token}` },
-      // });
-      await fetch(`${_URL}hall/${hall.id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    await Fetch.send("DELETE", `hall/${hall.id}`);
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   await fetch(`${_URL}hall/${hall.id}`, {
+    //     method: "DELETE",
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   onClickBtnCreateHall() {
@@ -95,52 +98,76 @@ export default class HallManagement {
     e.preventDefault();
     const hallName = this.modalInputEl.value;
     this.hideModal();
-    
+
     this.addHall(hallName).then((hallId) => {
-      const defaultChairs = this.createDefaultChairs(defaultRows, defaultChairsInRow, hallId);
-      this.sendDefaultChairs(defaultChairs).then(() => getHalls(hallId))
+      const defaultChairs = this.createDefaultChairs(
+        defaultRows,
+        defaultChairsInRow,
+        hallId
+      );
+      this.sendDefaultChairs(defaultChairs).then(() => getHalls(hallId));
     });
   }
 
   async addHall(hall) {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse  = await fetch(`${_URL}hall`, {
-        method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name: hall,
-            ticket_price: ticketPrice,
-            vip_ticket_price: vipTicketPrice,
-            sales: false,
-          }),
-      });
-      const response = await jsonResponse.json();
-      return response.id;
-    } catch (error) {
-      console.error(error);
-    }
-  }
-  
-  async sendDefaultChairs(chairs) {
-    const token = localStorage.getItem('token');
-    try {
-      await fetch(`${_URL}chair`, {
-      method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          chairs,
-        }),
+    const response = await Fetch.send("POST", "hall", {
+      bodyJson: {
+        name: hall,
+        ticket_price: ticketPrice,
+        vip_ticket_price: vipTicketPrice,
+        sales: false,
+      },
     });
-    } catch (error) {
-      console.error(error);
-    }
+    return response.id;
+
+    // const token = localStorage.getItem("token");
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}hall`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //     body: JSON.stringify({
+    //       name: hall,
+    //       ticket_price: ticketPrice,
+    //       vip_ticket_price: vipTicketPrice,
+    //       sales: false,
+    //     }),
+    //   });
+    //   const response = await jsonResponse.json();
+    //   return response.id;
+    // } catch (error) {
+    //   console.error(error);
+    // }
+  }
+
+  /**
+   * Функция отправляет кресла для создания их в новом зале
+   * в креслах указаны hall_id, row, place, type
+   *
+   * @async
+   * @param {*} chairs
+   * @returns {*}
+   */
+  async sendDefaultChairs(chairs) {
+    await Fetch.send("POST", "chair", { bodyJson: { chairs } });
+
+    // const token = localStorage.getItem("token");
+    // try {
+    //   await fetch(`${_URL}chair`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //     body: JSON.stringify({
+    //       chairs,
+    //     }),
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   createDefaultChairs(defaultRows, defaultChairsInRow, hallId) {

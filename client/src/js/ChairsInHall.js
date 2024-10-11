@@ -1,4 +1,5 @@
 import { _URL } from "./app.js";
+import Fetch from "./Fetch.js";
 
 export default class ChairsInHall {
   constructor(hallId, seance, date) {
@@ -27,25 +28,34 @@ export default class ChairsInHall {
   }
 
   async getChairs() {
-    try {
-      const jsonResponse = await fetch(`${_URL}hall/${this.hallId}/chairs`);
-      this.chairs = await jsonResponse.json();
-    } catch (error) {
-      console.error(error);
-    }
+    this.chairs = await Fetch.send("GET", `hall/${this.hallId}/chairs`);
+
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}hall/${this.hallId}/chairs`);
+    //   this.chairs = await jsonResponse.json();
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   async getOccupiedChairs() {
-    try {
-      const jsonResponse = await fetch(
-        `${_URL}chair/seance/${this.seance.id}/date/${new Date(
-          this.date
-        ).toLocaleDateString()}`
-      );
-      this.occupiedChairs = await jsonResponse.json();
-    } catch (error) {
-      console.error(error);
-    }
+    this.occupiedChairs = await Fetch.send(
+      "GET",
+      `chair/seance/${this.seance.id}/date/${new Date(
+        this.date
+      ).toLocaleDateString()}`
+    );
+
+    // try {
+    //   const jsonResponse = await fetch(
+    //     `${_URL}chair/seance/${this.seance.id}/date/${new Date(
+    //       this.date
+    //     ).toLocaleDateString()}`
+    //   );
+    //   this.occupiedChairs = await jsonResponse.json();
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   renderChairs(chairs) {
@@ -65,7 +75,7 @@ export default class ChairsInHall {
         } else {
           if (+chair.type === 2) {
             chairEl.classList.add("buying-scheme__chair_vip");
-            chairEl.addEventListener("click", this.onClickChair.bind(this));  
+            chairEl.addEventListener("click", this.onClickChair.bind(this));
           } else if (+chair.type === 1) {
             chairEl.classList.add("buying-scheme__chair_standart");
             chairEl.addEventListener("click", this.onClickChair.bind(this));
@@ -109,7 +119,7 @@ export default class ChairsInHall {
   removeChairToArray(chairId) {
     if (chairId && this.selectedChairsId.includes(chairId)) {
       this.selectedChairsId = [
-        ...this.selectedChairsId.filter(item => item != chairId),
+        ...this.selectedChairsId.filter((item) => item != chairId),
       ];
     }
   }

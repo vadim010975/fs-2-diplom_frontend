@@ -1,5 +1,6 @@
 import { _URL, _URL_PAYMENT } from "./app.js";
 import ChairsInHall from "./ChairsInHall.js";
+import Fetch from "./Fetch.js";
 
 export default class Hall {
   constructor() {
@@ -55,15 +56,17 @@ export default class Hall {
   }
 
   async getBuyingInfo(seanceId) {
-    try {
-      const jsonResponse = await fetch(`${_URL}seance/${seanceId}`);
-      const response = await jsonResponse.json();
+    const response = await Fetch.send("GET", `seance/${seanceId}`)
+
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}seance/${seanceId}`);
+    //   const response = await jsonResponse.json();
       this.hall = response.hall;
       this.movie = response.movie;
       this.seance = response.seance;
-    } catch (error) {
-      console.error(error);
-    }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   renderBuyingInfo() {
@@ -115,12 +118,14 @@ export default class Hall {
   }
 
   async getChair(chairId) {
-    try {
-      const jsonResponse = await fetch(`${_URL}chair/${chairId}`);
-      return jsonResponse.json();
-    } catch (error) {
-      console.error(error);
-    }
+    return await Fetch.send("GET", `chair/${chairId}`);
+
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}chair/${chairId}`);
+    //   return jsonResponse.json();
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   getCost() {

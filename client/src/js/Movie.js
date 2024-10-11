@@ -1,4 +1,5 @@
 import { _URL } from "./app.js";
+import Fetch from "./Fetch.js";
 import MovieSeancesHall from "./MovieSeancesHall.js";
 
 export default class Movie {
@@ -65,13 +66,15 @@ export default class Movie {
   }
 
   async getSeances(hallId) {
-    try {
-      const jsonResponse = await fetch(
-        `${_URL}hall/${hallId}/seances/${this.movie.id}`
-      );
-      return jsonResponse.json();
-    } catch (error) {
-      console.error(error);
-    }
+    return await Fetch.send("GET", `hall/${hallId}/seances/${this.movie.id}`);
+
+    // try {
+    //   const jsonResponse = await fetch(
+    //     `${_URL}hall/${hallId}/seances/${this.movie.id}`
+    //   );
+    //   return jsonResponse.json();
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 }

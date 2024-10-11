@@ -1,5 +1,6 @@
 import { _URL } from "./app.js";
 import Poster from "./Poster.js";
+import Fetch from "./Fetch.js";
 
 export default class PosterList {
   constructor(movies) {
@@ -20,18 +21,20 @@ export default class PosterList {
   }
 
   async onUpdatePosterList() {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse = await fetch(`${_URL}movie`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const response = await jsonResponse.json();
+    const response = await Fetch.send("GET", "movie");
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}movie`, {
+    //     method: "GET",
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+    //   const response = await jsonResponse.json();
       this.getPosters(response);
       this.renderPosters();
-    } catch (error) {
-      console.error(error);
-    }
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   renderPosters() {

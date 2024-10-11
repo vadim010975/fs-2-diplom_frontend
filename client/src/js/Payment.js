@@ -1,4 +1,5 @@
 import { _URL, _URL_TICKET } from "./app.js";
+import Fetch from "./Fetch.js";
 
 export default class Payment {
   constructor() {
@@ -38,27 +39,43 @@ export default class Payment {
   }
 
   async onClickAcceptinButtonEl() {
+    console.log("onClickAcceptinButtonEl");
+    console.log(this.paymentInfo.chairs);
     for (const chair of this.paymentInfo.chairs) {
+      console.log(chair);
       await this.saveTicketInformation(chair.id);
     }
+    console.log(this.error);
     if (!this.error) {
       window.location.href = _URL_TICKET;
     }
   }
 
   async saveTicketInformation(chairId) {
+    console.log(chairId);
     try {
-      const response = await fetch(`${_URL}ticket`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          date: new Date(this.paymentInfo.date).toLocaleDateString(),
-          seance_id: this.paymentInfo.seance.id,
-          chair_id: chairId,
-        }),
+      const response = await Fetch.send("POST", "ticket", {
+        bodyJson:
+          {
+            date: new Date(this.paymentInfo.date).toLocaleDateString(),
+            seance_id: this.paymentInfo.seance.id,
+            chair_id: chairId,
+          },
+        cleanResponse: true,
       });
+
+
+      // const response = await fetch(`${_URL}ticket`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     date: new Date(this.paymentInfo.date).toLocaleDateString(),
+      //     seance_id: this.paymentInfo.seance.id,
+      //     chair_id: chairId,
+      //   }),
+      // });
       if (!response.ok) {
         throw new Error(response.status);
       }

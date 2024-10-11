@@ -1,10 +1,11 @@
 import { _URL } from "./app.js";
-import { getHalls } from "./functions.js";
 import HallManagement from "./HallManagement.js";
 import HallConfiguration from "./HallConfiguration.js";
 import PriceConfiguration from "./PriceConfiguration.js";
 import SeanceGrid from "./SeanceGrid.js";
 import OpenSales from "./OpenSales.js";
+import Fetch from "./Fetch.js";
+import Loader from "./Loader.js";
 
 export default class Page {
   constructor(container) {
@@ -35,15 +36,17 @@ export default class Page {
   }
 
   async getHalls() {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse = await fetch(`${_URL}hall`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      return await jsonResponse.json();
-    } catch (error) {
-      console.error(error);
-    }
+    return await Fetch.send("GET", "hall");
+
+    // const token = localStorage.getItem('token');
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}hall`, {
+    //     method: "GET",
+    //     headers: { Authorization: `Bearer ${token}` },
+    //   });
+    //   return await jsonResponse.json();
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 }

@@ -1,4 +1,5 @@
 import { _URL } from "./app.js";
+import Fetch from "./Fetch.js";
 import HallList from "./HallList.js";
 import HallSize from "./HallSize.js";
 
@@ -49,7 +50,6 @@ export default class HallConfiguration {
     this.activeHallId = activeHall.id;
     this.getChairs().then(() => {
       this.hallSize.renderHallSize(this.getSizeHall(this.chairs));
-      this.hallEl.innerHTML = "";
       this.renderHall(this.chairs);
     });
   }
@@ -70,7 +70,6 @@ export default class HallConfiguration {
         });
       }
     }
-    this.hallEl.innerHTML = "";
     this.renderHall(chairs);
   }
 
@@ -115,7 +114,6 @@ export default class HallConfiguration {
       });
       this.chairsCopy = [];
       this.hallSize.renderHallSize(this.getSizeHall(this.chairs));
-      this.hallEl.innerHTML = "";
       this.renderHall(this.chairs);
     }
   }
@@ -124,66 +122,92 @@ export default class HallConfiguration {
     if (this.chairsCopy.length === 0) {
       return;
     }
-    this.chairsCopy = [];
     const chairs = this.getChairsFromHall();
+    if (chairs.length === 0) {
+      this.onClickBtnCancel();
+      return;
+    }
+    this.chairsCopy = [];
     if (chairs.every((chair) => chair.id)) {
       this.updateChairs(chairs);
     } else {
-      this.createChairs(chairs, this.activeHallId);
-    }
-  }
-
-  async updateChairs(chairs) {
-    const token = localStorage.getItem('token');
-    try {
-      await fetch(`${_URL}chair`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ chairs }),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async createChairs(chairs, hallId) {
-    const token = localStorage.getItem('token');
-    try {
-      await fetch(`${_URL}chair/${hallId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ chairs }),
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async getChairs() {
-    const token = localStorage.getItem('token');
-    try {
-      const jsonResponse = await fetch(
-        `${_URL}hall/${this.activeHallId}/chairs`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      this.createChairs(chairs, this.activeHallId).then((resolve) =>
+        this.renderHall(resolve)
       );
-      this.chairs = await jsonResponse.json();
-    } catch (error) {
-      console.error(error);
     }
+  }
+
+  /**
+   * Функция для обновления кресел по их id
+   * применяется, когда размеры зала не менялась,
+   * а поменялись типы кресел
+   *
+   * @async
+   * @param {*} chairs
+   * @returns {*}
+   */
+  async updateChairs(chairs) {
+    await Fetch.send("PUT", "chair", { bodyJson: { chairs } });
+  }
+
+  /**
+   * Функция для создания новых кресел,
+   * в случааи изменения размеров зала,
+   * креслам присваиваится новые id
+   *
+   * @async
+   * @param {*} chairs
+   * @param {*} hallId
+   * @returns {*}
+   */
+  async createChairs(chairs, hallId) {
+    return await Fetch.send("PUT", `chair/${hallId}`, { bodyJson: { chairs } });
+
+    // const token = localStorage.getItem("token");
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}chair/${hallId}`, {
+    //     method: "PUT",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //     body: JSON.stringify({ chairs }),
+    //   });
+    //   return await jsonResponse.json();
+    // } catch (error) {
+    //   console.error(error);
+    // }
+  }
+
+  /**
+   * Функция получает кресла по this.activeHallId
+   *
+   * @async
+   * @returns {*}
+   */
+  async getChairs() {
+    this.chairs = await Fetch.send("GET", `hall/${this.activeHallId}/chairs`);
+
+    // const token = localStorage.getItem("token");
+    // try {
+    //   const jsonResponse = await fetch(
+    //     `${_URL}hall/${this.activeHallId}/chairs`,
+    //     {
+    //       method: "GET",
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   );
+    //   this.chairs = await jsonResponse.json();
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 
   renderHall(chairs) {
-    const{ rows: rowsCount, places: chairsInRow } = this.getSizeHall(chairs);
+    this.hallEl.innerHTML = "";
+    const { rows: rowsCount, places: chairsInRow } = this.getSizeHall(chairs);
     for (let i = 1; i <= rowsCount; i += 1) {
       const rowEl = document.createElement("div");
       rowEl.classList.add("conf-step__row");
@@ -245,7 +269,7 @@ export default class HallConfiguration {
           row,
           place,
           type,
-        }
+        };
       })
       .sort((a, b) => a.id < b.id);
     return chairs;
@@ -255,6 +279,6 @@ export default class HallConfiguration {
     return {
       rows: Math.max(...chairs.map((chair) => chair.row)),
       places: Math.max(...chairs.map((chair) => chair.place)),
-    }
+    };
   }
 }

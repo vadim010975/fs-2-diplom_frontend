@@ -1,4 +1,5 @@
 import { _URL } from "./app.js";
+import Fetch from "./Fetch.js";
 
 export default class Ticket {
   constructor() {
@@ -8,7 +9,7 @@ export default class Ticket {
   init() {
     this.bindToDom();
     this.getDataFromSessionStorage();
-    this.getQrCode().then(resolve => {
+    this.getQrCode().then((resolve) => {
       this.renderInfo(resolve);
     });
   }
@@ -24,7 +25,9 @@ export default class Ticket {
   }
 
   renderInfo(qrCodeUrl) {
-    this.ticketDateEl.textContent = new Date(this.paymentInfo.date).toLocaleString("ru", { day: "numeric", month: "long", year: "numeric" });
+    this.ticketDateEl.textContent = new Date(
+      this.paymentInfo.date
+    ).toLocaleString("ru", { day: "numeric", month: "long", year: "numeric" });
     this.ticketTitleEl.textContent = this.paymentInfo.movieTitle;
     this.ticketChairsEl.textContent = this.paymentInfo.chairs
       .map((chair) => `ряд:${chair.row} место:${chair.place}`)
@@ -39,25 +42,39 @@ export default class Ticket {
   }
 
   async getQrCode() {
-    try {
-      const jsonResponse = await fetch(`${_URL}qrcode`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ticketTitle: this.paymentInfo.movieTitle,
-          ticketChairs: this.paymentInfo.chairs
-            .map((chair) => `ряд:${chair.row} место:${chair.place}`)
-            .join(", "),
-          ticketHall: this.paymentInfo.hallName,
-          ticketStart: this.paymentInfo.seance.start,
-        }),
-      });
-      const response = await jsonResponse.json();
-      return response;
-    } catch (error) {
-      console.error(error);
-    }
+    const response = await Fetch.send("POST", "qrcode", {
+      bodyJson: {
+        ticketTitle: this.paymentInfo.movieTitle,
+        ticketChairs: this.paymentInfo.chairs
+          .map((chair) => `ряд:${chair.row} место:${chair.place}`)
+          .join(", "),
+        ticketHall: this.paymentInfo.hallName,
+        ticketStart: this.paymentInfo.seance.start,
+      },
+    });
+
+    return response;
+
+    // try {
+    //   const jsonResponse = await fetch(`${_URL}qrcode`, {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       ticketTitle: this.paymentInfo.movieTitle,
+    //       ticketChairs: this.paymentInfo.chairs
+    //         .map((chair) => `ряд:${chair.row} место:${chair.place}`)
+    //         .join(", "),
+    //       ticketHall: this.paymentInfo.hallName,
+    //       ticketStart: this.paymentInfo.seance.start,
+    //     }),
+    //   });
+    //   // const response = await jsonResponse.json();
+    //   const response = await jsonResponse.text();
+    //   return response;
+    // } catch (error) {
+    //   console.error(error);
+    // }
   }
 }

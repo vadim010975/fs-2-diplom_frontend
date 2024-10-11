@@ -1,4 +1,5 @@
 import Calendar from "./Calendar.js";
+import Loader from "./Loader.js";
 import MoviesList from "./MoviesList.js";
 
 export default class Page {
