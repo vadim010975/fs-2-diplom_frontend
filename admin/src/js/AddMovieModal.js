@@ -105,7 +105,7 @@ export default class AddMovieModal {
   }
 
   static updatePosterList() {
-    const event = new CustomEvent("updatePosterList");
+    const event = new CustomEvent("updateMovies");
     document.querySelector(".main").dispatchEvent(event);
   }
 

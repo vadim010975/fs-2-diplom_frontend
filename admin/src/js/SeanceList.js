@@ -1,3 +1,4 @@
+import Fetch from "./Fetch.js";
 import HallSeances from "./HallSeances.js";
 
 export default class SeancesList {
@@ -20,6 +21,7 @@ export default class SeancesList {
     this.mainEl.addEventListener("updateHall", this.hallUpdateHandler);
     this.updateHallsSeances = this.updateHallsSeances.bind(this);
     this.mainEl.addEventListener("updateHallsSeances", this.updateHallsSeances);
+    this.mainEl.addEventListener("updateMovies", this.updateMovies.bind(this));
     this.containerEl = document.querySelector(".conf-step__seances");
   }
 
@@ -48,5 +50,9 @@ export default class SeancesList {
   updateHallsSeances() {
     this.getHallsSeances(this.halls);
     this.renderHallsSeances();
+  }
+
+  async updateMovies() {
+    this.movies = await Fetch.send("GET", "movie");
   }
 }

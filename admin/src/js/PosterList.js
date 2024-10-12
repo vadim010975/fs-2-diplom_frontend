@@ -16,7 +16,7 @@ export default class PosterList {
 
   bindToDom() {
     this.mainEl = document.querySelector(".main");
-    this.mainEl.addEventListener("updatePosterList", this.onUpdatePosterList.bind(this));
+    this.mainEl.addEventListener("updateMovies", this.onUpdatePosterList.bind(this));
     this.moviesContainerEl = document.querySelector(".movies-container");
   }
 

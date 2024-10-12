@@ -39,20 +39,15 @@ export default class Payment {
   }
 
   async onClickAcceptinButtonEl() {
-    console.log("onClickAcceptinButtonEl");
-    console.log(this.paymentInfo.chairs);
     for (const chair of this.paymentInfo.chairs) {
-      console.log(chair);
       await this.saveTicketInformation(chair.id);
     }
-    console.log(this.error);
     if (!this.error) {
       window.location.href = _URL_TICKET;
     }
   }
 
   async saveTicketInformation(chairId) {
-    console.log(chairId);
     try {
       const response = await Fetch.send("POST", "ticket", {
         bodyJson:
